@@ -3,5 +3,6 @@ Rails.application.routes.draw do
   get "r/:code", to: "pages#home", as: :room_link
   post "rooms", to: "rooms#create"
   post "players", to: "players#create"
+  post "questions", to: "questions#create"
   get "up", to: "rails/health#show", as: :rails_health_check
 end

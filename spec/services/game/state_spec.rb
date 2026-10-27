@@ -46,6 +46,13 @@ RSpec.describe Game::State do
     expect(described_class.call(room)[:all_done]).to be true
   end
 
+  it "tells the browser whether the AI generator is available" do
+    allow(Game::GenerateQuestions).to receive(:enabled?).and_return(true)
+    expect(described_class.call(room)[:ai_enabled]).to be true
+    allow(Game::GenerateQuestions).to receive(:enabled?).and_return(false)
+    expect(described_class.call(room)[:ai_enabled]).to be false
+  end
+
   it "is not all_done in the lobby" do
     expect(described_class.call(room)[:all_done]).to be false
   end

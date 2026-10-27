@@ -8,4 +8,4 @@
 
 **Description (under 500 characters):**
 
-Bluff Club is a live party game for 2 to 12 players. One person creates a room and shares a 4 letter code. Everyone joins from their phone, no login. Each round shows a trivia question. You write a fake answer that sounds real, then everyone votes for the truth. Points for spotting the truth and for fooling friends. Hosts can add their own questions, so it works as a team icebreaker or a class quiz. Built with Rails and Action Cable, all screens stay in sync.
+Bluff Club is a live party game for 2 to 12 players. One person creates a room and shares a 4 letter code. Everyone joins from a phone, no login. Each round shows a trivia question. You write a fake answer that sounds real, then everyone votes for the truth. Points for spotting the truth and for fooling friends. Hosts can type their own questions, or give OpenAI a topic and get a fresh quiz in seconds. Great as a team icebreaker or a class quiz. Rails and Action Cable keep all screens in sync.

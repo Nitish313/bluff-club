@@ -22,6 +22,19 @@ File paths are relative to the repo root.
 - JS saves the token in localStorage under `bluff:<CODE>`. The token is the player's identity.
   There is no login.
 
+## 2b. AI questions (optional)
+
+- In the lobby, with "Custom" picked, the host can type a topic and press "Write questions with AI".
+- JS sends `POST /questions` with code, token and topic. `QuestionsController` checks the token
+  belongs to the host and the room is not mid-game, then calls `Game::GenerateQuestions`.
+- The service sends one request to OpenAI (`gpt-4o-mini`, JSON mode) asking for 8 short-answer
+  questions on the topic. It cleans the reply and returns `[{question, answer}]`.
+- The browser puts them into the custom questions box as `Question | Answer` lines.
+  The host can edit or delete lines, then press Start as usual.
+- Needs `OPENAI_API_KEY` on the server. Without it the button is hidden
+  (`ai_enabled: false` in the state) and the endpoint returns a clear error.
+- The API key never reaches the browser. Topic max is 60 characters.
+
 ## 3. Live connection (Action Cable)
 
 - JS opens a WebSocket and subscribes to `RoomChannel` (`app/channels/room_channel.rb`)

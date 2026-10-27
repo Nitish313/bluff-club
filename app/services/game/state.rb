@@ -14,6 +14,7 @@ module Game
         host_id: @room.host_player_id,
         settings: { pack: @room.pack, question_count: @room.question_count },
         packs: Game::Packs.summary,
+        ai_enabled: Game::GenerateQuestions.enabled?,
         players: players,
         round: round_payload,
         all_done: Game::Advance.all_done?(@room),

@@ -13,7 +13,8 @@ Built for the Handshake x OpenAI "Create a Multiplayer Game" challenge.
 4. Everyone picks the one they think is true.
 5. +1000 if you find the truth. +500 for each friend who picks your fake.
 
-The host can pick a built-in pack or type their own questions. 2 to 12 players.
+The host can pick a built-in pack, type their own questions, or type a topic and let OpenAI
+write the questions (needs an API key on the server). 2 to 12 players.
 
 ## Run locally
 
@@ -35,7 +36,8 @@ Open http://localhost:3005 in two or more browser tabs (use a private window for
    Change its start from `mysql://` to `mysql2://` and make sure it ends with `?ssl_mode=required`.
 2. On Render, New > Blueprint, pick this repo. It reads `render.yaml`.
 3. Set env vars: `RAILS_MASTER_KEY` (from `config/master.key`), `DATABASE_URL` (the Aiven URI from step 1),
-   `APP_URL` (your Render URL, e.g. https://bluff-club.onrender.com).
+   `APP_URL` (your Render URL, e.g. https://bluff-club.onrender.com),
+   `OPENAI_API_KEY` (optional, turns on the AI question generator in the lobby).
 4. Deploy.
 
 ## Production console and database
@@ -66,3 +68,5 @@ Full technical walkthrough: [docs/how-it-works.md](docs/how-it-works.md)
 - Game rules are in `app/services/game/`. Phases: lobby, writing, voting, reveal, finished.
 - Timers are Active Job jobs run by Solid Queue inside the web process.
 - Rooms idle for 2 hours are closed by an hourly job.
+- AI questions: `POST /questions` (host only, lobby only) calls OpenAI `gpt-4o-mini` with the topic
+  and returns `[{question, answer}]`. The host can edit them before starting. See `Game::GenerateQuestions`.

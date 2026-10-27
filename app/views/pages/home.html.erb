@@ -38,10 +38,19 @@
           <option>3</option><option>5</option><option selected>6</option><option>8</option><option>10</option>
         </select>
       </label>
-      <label class="field" id="custom-field" hidden>
-        <span>Your questions, one per line: <code>Question? | Answer</code></span>
-        <textarea id="custom-input" rows="5" placeholder="What was our first product? | HowNow"></textarea>
-      </label>
+      <div class="stack" id="custom-field" hidden>
+        <div class="field" id="ai-field" hidden>
+          <span>Or type a topic and let AI write them</span>
+          <div class="row">
+            <input id="topic-input" maxlength="60" placeholder="Bollywood 90s, space, our company…">
+            <button id="ai-btn" class="btn small" type="button">Write questions with AI</button>
+          </div>
+        </div>
+        <label class="field">
+          <span>Your questions, one per line: <code>Question? | Answer</code></span>
+          <textarea id="custom-input" rows="5" placeholder="What was our first product? | HowNow"></textarea>
+        </label>
+      </div>
       <button id="start-btn" class="btn primary">Start game</button>
       <p class="hint">Need at least 2 players. Best with 3 to 8.</p>
     </div>

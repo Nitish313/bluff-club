@@ -136,6 +136,7 @@ function renderLobby() {
     sel.value = state.settings.pack
   }
   $("custom-field").hidden = sel.value !== "custom"
+  $("ai-field").hidden = !state.ai_enabled
 }
 
 function roundLabel(r) { return `Question ${r.index + 1} of ${r.total}` }
@@ -288,6 +289,21 @@ $("start-btn").onclick = () => {
     return { question: (question || "").trim(), answer: (answer || "").trim() }
   }).filter((q) => q.question && q.answer)
   act("start_game", { pack, question_count: Number($("count-select").value), custom_questions })
+}
+
+$("ai-btn").onclick = async () => {
+  const btn = $("ai-btn")
+  setBusy(btn, true)
+  try {
+    const topic = $("topic-input").value.trim()
+    const token = load(`bluff:${session.code}`)
+    const data = await post("/questions", { code: session.code, token, topic })
+    const lines = data.questions.map((q) => `${q.question} | ${q.answer}`)
+    const box = $("custom-input")
+    box.value = (box.value.trim() ? box.value.trim() + "\n" : "") + lines.join("\n")
+    toast(`Added ${lines.length} questions. Edit them if you like, then start.`)
+  } catch (e) { toast(e.message) }
+  setBusy(btn, false)
 }
 
 $("bluff-btn").onclick = () => {
