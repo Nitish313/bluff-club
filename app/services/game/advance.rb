@@ -26,7 +26,7 @@ module Game
         return false unless room.writing? || room.voting?
         players = room.active_players.to_a
         return false if players.empty?
-        return false unless players.all? { |p| done?(room, p) }
+        return false unless all_done?(room, players)
         next_phase(room)
         true
       end
@@ -42,14 +42,12 @@ module Game
       end
     end
 
-    def self.done?(room, player)
+    # One query: the set of players who already answered this phase.
+    def self.all_done?(room, players)
       round = room.current_round
       return false if round.nil?
-      if room.writing?
-        round.bluffs.exists?(player_id: player.id)
-      else
-        round.votes.exists?(player_id: player.id)
-      end
+      done_ids = room.writing? ? round.bluffs.pluck(:player_id) : round.votes.pluck(:player_id)
+      players.all? { |p| done_ids.include?(p.id) }
     end
 
     def self.next_phase(room)

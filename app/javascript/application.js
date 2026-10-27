@@ -204,12 +204,18 @@ function renderReveal() {
     div.className = `reveal-row ${o.truth ? "truth" : ""}`
     const who = o.truth ? "The truth" : `${esc(o.author)}'s bluff`
     const voters = o.voters.length ? `Picked by ${o.voters.map(esc).join(", ")}` : "Nobody picked this"
-    const pts = !o.points ? "" : (o.truth ? `+${o.points / o.voters.length} each` : `+${o.points} to ${esc(o.author)}`)
+    const pts = !o.points ? "" : pointsLabel(o)
     div.innerHTML = `<div class="reveal-text">${esc(o.text)}</div><div class="reveal-meta">${who} · ${voters}</div><div class="reveal-pts">${pts}</div>`
     return div
   }))
   scoreList($("reveal-scores"))
   $("next-btn").hidden = !isHost()
+}
+
+function pointsLabel(o) {
+  if (!o.truth) return `+${o.points} to ${esc(o.author)}`
+  if (o.voters.length === 1) return `+${o.points} to ${esc(o.voters[0])}`
+  return `+${o.points / o.voters.length} each`
 }
 
 function renderFinished() {

@@ -40,6 +40,8 @@ Open http://localhost:3005 in two or more browser tabs (use a private window for
 
 ## How it works
 
+Full technical walkthrough: [docs/how-it-works.md](docs/how-it-works.md)
+
 - One Rails 8 app. Action Cable sends the full room state to every player after each change.
 - Game rules are in `app/services/game/`. Phases: lobby, writing, voting, reveal, finished.
 - Timers are Active Job jobs run by Solid Queue inside the web process.
