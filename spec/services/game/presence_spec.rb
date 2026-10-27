@@ -23,12 +23,21 @@ RSpec.describe Game::Presence do
     expect(HostMigrationJob).not_to have_been_enqueued
   end
 
-  it "ends the phase early if the leaver was the last one not done" do
+  it "ends voting early if the leaver was the last one not done" do
+    room.rounds.create!(position: 0, question: "Q", answer: "T")
+    Game::Advance.enter(room, "voting")
+    room.current_round.votes.create!(player: guest, bluff: nil)
+    described_class.disconnected(host)
+    expect(room.reload).to be_reveal
+  end
+
+  it "keeps writing open for the host when the last unanswered player leaves" do
     room.rounds.create!(position: 0, question: "Q", answer: "T")
     Game::Advance.enter(room, "writing")
-    room.current_round.bluffs.create!(player: guest, text: "x", normalized: "x")
-    described_class.disconnected(host)
-    expect(room.reload).to be_voting
+    room.current_round.bluffs.create!(player: host, text: "x", normalized: "x")
+    described_class.disconnected(guest)
+    expect(room.reload).to be_writing
+    expect(Game::State.call(room)[:all_done]).to be true
   end
 
   describe ".migrate_host" do

@@ -53,8 +53,11 @@ File paths are relative to the repo root.
   then enqueues `PhaseTimeoutJob` with that token. Jobs run with Solid Queue inside Puma.
 - When the job fires it compares its token with the room's token. If the room already moved on,
   the tokens differ and the job does nothing. This stops an old timer from breaking a newer phase.
-- If every active player (connected, not spectator) has finished, `maybe_finish_phase`
-  moves on at once without waiting for the timer.
+- Writing never ends early. When every active player (connected, not spectator) has answered,
+  the state gets `all_done: true` and the host sees a "Start voting" button. Pressing it calls
+  `Game::Advance.skip`, which refuses unless everyone has answered. Otherwise the 60s timer ends it.
+- Voting does end early: when every active player has voted, `maybe_finish_phase` moves to reveal.
+- On the last round the reveal button says "See final scores" instead of "Next question".
 - The browser also shows a countdown. When it hits 0 it sends `tick` as a backup,
   in case the job is late.
 

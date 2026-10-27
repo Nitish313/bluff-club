@@ -90,7 +90,7 @@ function connect(code, token) {
 function act(action, data = {}) { if (sub) sub.perform(action, data) }
 
 function unlockButtons() {
-  ;["create-btn", "join-btn", "start-btn", "bluff-btn", "next-btn", "again-btn"].forEach((id) => setBusy($(id), false))
+  ;["create-btn", "join-btn", "start-btn", "bluff-btn", "voting-btn", "next-btn", "again-btn"].forEach((id) => setBusy($(id), false))
   document.querySelectorAll(".option").forEach((b) => { b.disabled = false })
 }
 
@@ -152,6 +152,7 @@ function renderWriting() {
   $("writing-done").textContent = p?.spectator
     ? "You are watching this game. You play from the next one."
     : "Bluff sent. Waiting for the others…"
+  $("voting-btn").hidden = !(isHost() && state.all_done)
   const list = $("writing-players")
   list.replaceChildren(...state.players.filter((x) => !x.spectator).map((x) => playerItem(x, x.done ? "✅" : "…")))
   if (!done && document.activeElement !== $("bluff-input")) $("bluff-input").focus()
@@ -210,6 +211,7 @@ function renderReveal() {
   }))
   scoreList($("reveal-scores"))
   $("next-btn").hidden = !isHost()
+  $("next-btn").textContent = r.index + 1 >= r.total ? "See final scores" : "Next question"
 }
 
 function pointsLabel(o) {
@@ -300,6 +302,7 @@ $("name-input").addEventListener("keydown", (e) => {
 })
 
 $("next-btn").onclick = () => { setBusy($("next-btn"), true); act("next_round") }
+$("voting-btn").onclick = () => { setBusy($("voting-btn"), true); act("next_round") }
 $("again-btn").onclick = () => { setBusy($("again-btn"), true); act("play_again") }
 $("leave-btn").onclick = () => {
   if (sub) sub.unsubscribe()

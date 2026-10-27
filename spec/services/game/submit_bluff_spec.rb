@@ -49,10 +49,9 @@ RSpec.describe Game::SubmitBluff do
     expect { described_class.call(room: room, player: guest, text: "Sydney") }.to raise_error(Game::Error, /watching/i)
   end
 
-  it "moves to voting when everyone has written" do
+  it "stays in writing even when everyone has written" do
     described_class.call(room: room, player: host, text: "Sydney")
-    expect(room.reload).to be_writing
     described_class.call(room: room, player: guest, text: "Perth")
-    expect(room.reload).to be_voting
+    expect(room.reload).to be_writing
   end
 end

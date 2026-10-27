@@ -20,7 +20,6 @@ module Game
       bluff = round.bluffs.find_or_initialize_by(player_id: player.id)
       bluff.player = player
       bluff.update!(text: text, normalized: norm)
-      Game::Advance.maybe_finish_phase(room)
       bluff
     end
   end

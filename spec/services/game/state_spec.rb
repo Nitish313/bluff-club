@@ -28,7 +28,26 @@ RSpec.describe Game::State do
     expect(s[:round][:phase_ends_at]).to be_present
     expect(s[:players].find { |p| p[:id] == host.id }[:done]).to be true
     expect(s[:players].find { |p| p[:id] == guest.id }[:done]).to be false
+    expect(s[:all_done]).to be false
     expect(s[:round]).not_to have_key(:options)
+  end
+
+  it "flags all_done when every active player has answered" do
+    round.bluffs.create!(player: host, text: "x", normalized: "x")
+    round.bluffs.create!(player: guest, text: "y", normalized: "y")
+    Game::Advance.enter(room, "writing")
+    expect(described_class.call(room)[:all_done]).to be true
+  end
+
+  it "ignores offline players for all_done" do
+    round.bluffs.create!(player: host, text: "x", normalized: "x")
+    guest.update!(connected: false)
+    Game::Advance.enter(room, "writing")
+    expect(described_class.call(room)[:all_done]).to be true
+  end
+
+  it "is not all_done in the lobby" do
+    expect(described_class.call(room)[:all_done]).to be false
   end
 
   it "lists options during voting without authors or the truth flag" do

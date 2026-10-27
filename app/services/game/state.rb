@@ -16,6 +16,7 @@ module Game
         packs: Game::Packs.summary,
         players: players,
         round: round_payload,
+        all_done: Game::Advance.all_done?(@room),
         reveal: reveal_payload,
         server_time: Time.current.iso8601(3)
       }

@@ -38,6 +38,26 @@ Open http://localhost:3005 in two or more browser tabs (use a private window for
    `APP_URL` (your Render URL, e.g. https://bluff-club.onrender.com).
 4. Deploy.
 
+## Production console and database
+
+Render's free plan has no shell. Run these from your laptop against the Aiven database.
+
+Rails console:
+
+    cd ~/projects/bluff-club
+    rvm use 3.4.8
+    export RAILS_ENV=production
+    export RAILS_MASTER_KEY=$(cat config/master.key)
+    export DATABASE_URL='mysql2://avnadmin:PASSWORD@HOST:PORT/defaultdb?ssl_mode=required'
+    bin/rails console
+
+MySQL client (the Aiven Connect tab shows the real host and port):
+
+    mysql --host=HOST --port=PORT --user=avnadmin -p --ssl-mode=REQUIRED defaultdb
+
+Reads are safe. Do not delete rows while people are playing.
+Close the terminal after, so the exported `DATABASE_URL` is gone.
+
 ## How it works
 
 Full technical walkthrough: [docs/how-it-works.md](docs/how-it-works.md)

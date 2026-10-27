@@ -20,32 +20,33 @@ module Game
       end
     end
 
-    # Called after every bluff or vote. Ends the phase early when everyone online is done.
+    # Called after every vote. Ends voting early when everyone online has voted.
+    # Writing never ends early: the host presses the button (see .skip).
     def self.maybe_finish_phase(room)
       room.with_lock do
-        return false unless room.writing? || room.voting?
-        players = room.active_players.to_a
-        return false if players.empty?
-        return false unless all_done?(room, players)
+        return false unless room.voting? && all_done?(room)
         next_phase(room)
         true
       end
     end
 
-    # Host presses "Next" during the reveal.
+    # Host button. Reveal: always. Writing: only once everyone online has answered.
     def self.skip(room, player)
       raise Game::Error, "Only the host can do that" unless room.host?(player)
       room.with_lock do
-        return false unless room.reveal?
+        return false unless room.reveal? || room.writing?
+        raise Game::Error, "Wait until everyone has answered" if room.writing? && !all_done?(room)
         next_phase(room)
         true
       end
     end
 
-    # One query: the set of players who already answered this phase.
-    def self.all_done?(room, players)
+    # True when every connected, non-spectator player has a bluff (writing) or vote (voting).
+    def self.all_done?(room)
+      return false unless room.writing? || room.voting?
       round = room.current_round
-      return false if round.nil?
+      players = room.active_players.to_a
+      return false if round.nil? || players.empty?
       done_ids = room.writing? ? round.bluffs.pluck(:player_id) : round.votes.pluck(:player_id)
       players.all? { |p| done_ids.include?(p.id) }
     end

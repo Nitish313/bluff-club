@@ -66,29 +66,36 @@ RSpec.describe Game::Advance do
   end
 
   describe ".maybe_finish_phase" do
-    it "ends writing early when every active player has a bluff" do
+    it "never ends writing early; the host starts voting" do
       described_class.enter(room, "writing")
       [p1, p2, p3].each { |p| r0.bluffs.create!(player: p, text: p.name, normalized: p.name.downcase) }
-      expect(described_class.maybe_finish_phase(room)).to be true
-      expect(room.reload).to be_voting
-    end
-
-    it "waits when someone has not written yet" do
-      described_class.enter(room, "writing")
-      r0.bluffs.create!(player: p1, text: "x", normalized: "x")
       expect(described_class.maybe_finish_phase(room)).to be false
       expect(room.reload).to be_writing
     end
 
+    it "ends voting early when every active player has voted" do
+      described_class.enter(room, "voting")
+      [p1, p2, p3].each { |p| r0.votes.create!(player: p, bluff: nil) }
+      expect(described_class.maybe_finish_phase(room)).to be true
+      expect(room.reload).to be_reveal
+    end
+
+    it "waits when someone has not voted yet" do
+      described_class.enter(room, "voting")
+      r0.votes.create!(player: p1, bluff: nil)
+      expect(described_class.maybe_finish_phase(room)).to be false
+      expect(room.reload).to be_voting
+    end
+
     it "ignores players who are offline" do
-      described_class.enter(room, "writing")
+      described_class.enter(room, "voting")
       p3.update!(connected: false)
-      [p1, p2].each { |p| r0.bluffs.create!(player: p, text: p.name, normalized: p.name.downcase) }
+      [p1, p2].each { |p| r0.votes.create!(player: p, bluff: nil) }
       expect(described_class.maybe_finish_phase(room)).to be true
     end
 
     it "never advances when nobody is online" do
-      described_class.enter(room, "writing")
+      described_class.enter(room, "voting")
       room.players.update_all(connected: false)
       expect(described_class.maybe_finish_phase(room)).to be false
     end
@@ -106,8 +113,22 @@ RSpec.describe Game::Advance do
       expect { described_class.skip(room, p2) }.to raise_error(Game::Error, /host/i)
     end
 
-    it "does nothing outside reveal" do
+    it "moves writing to voting once everyone has answered" do
       described_class.enter(room, "writing")
+      [p1, p2, p3].each { |p| r0.bluffs.create!(player: p, text: p.name, normalized: p.name.downcase) }
+      expect(described_class.skip(room, p1)).to be true
+      expect(room.reload).to be_voting
+    end
+
+    it "refuses to leave writing while someone has not answered" do
+      described_class.enter(room, "writing")
+      r0.bluffs.create!(player: p1, text: "x", normalized: "x")
+      expect { described_class.skip(room, p1) }.to raise_error(Game::Error, /everyone/i)
+      expect(room.reload).to be_writing
+    end
+
+    it "does nothing during voting" do
+      described_class.enter(room, "voting")
       expect(described_class.skip(room, p1)).to be false
     end
   end
