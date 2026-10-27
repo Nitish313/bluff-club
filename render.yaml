@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: bluff-club
+    runtime: ruby
+    plan: free
+    buildCommand: "bundle install && bin/rails assets:precompile && bin/rails db:migrate"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    healthCheckPath: /up
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: SOLID_QUEUE_IN_PUMA
+        value: "true"
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: APP_URL
+        sync: false

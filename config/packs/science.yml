@@ -1,0 +1,14 @@
+name: Science
+questions:
+  - { question: "What is the chemical symbol for gold?", answer: "Au" }
+  - { question: "How many teeth does an adult human usually have?", answer: "32" }
+  - { question: "What is the hardest natural substance on Earth?", answer: "Diamond" }
+  - { question: "At what temperature in Celsius does water boil at sea level?", answer: "100" }
+  - { question: "About how many minutes does sunlight take to reach Earth?", answer: "8" }
+  - { question: "Which gas do plants take in from the air?", answer: "Carbon dioxide" }
+  - { question: "How many chromosomes does a human cell have?", answer: "46" }
+  - { question: "What is the largest organ of the human body?", answer: "Skin" }
+  - { question: "Roughly what is the speed of sound in air, in km per hour?", answer: "1,235" }
+  - { question: "Which planet is called the Red Planet?", answer: "Mars" }
+  - { question: "How many legs does a spider have?", answer: "8" }
+  - { question: "What is the most common element in the universe?", answer: "Hydrogen" }

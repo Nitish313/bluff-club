@@ -1,0 +1,14 @@
+name: Tech & Internet
+questions:
+  - { question: "What year was Google founded?", answer: "1998" }
+  - { question: "What does HTTP stand for?", answer: "HyperText Transfer Protocol" }
+  - { question: "Who created the Linux kernel?", answer: "Linus Torvalds" }
+  - { question: "What year was the first version of Ruby released?", answer: "1995" }
+  - { question: "How many bits are in a byte?", answer: "8" }
+  - { question: "What dessert was Android 1.5 named after?", answer: "Cupcake" }
+  - { question: "In what year was YouTube launched?", answer: "2005" }
+  - { question: "What was Twitter's original character limit per tweet?", answer: "140" }
+  - { question: "What does CPU stand for?", answer: "Central Processing Unit" }
+  - { question: "Which company owns GitHub?", answer: "Microsoft" }
+  - { question: "In what year was the first email sent?", answer: "1971" }
+  - { question: "How many pixels wide is a 4K UHD screen?", answer: "3,840" }

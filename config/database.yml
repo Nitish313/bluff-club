@@ -1,0 +1,19 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: root
+  password: <%= ENV.fetch("MYSQL_PASSWORD", "") %>
+  host: 127.0.0.1
+
+development:
+  <<: *default
+  database: bluff_club_development
+
+test:
+  <<: *default
+  database: bluff_club_test
+
+production:
+  <<: *default
+  url: <%= ENV["DATABASE_URL"] %>

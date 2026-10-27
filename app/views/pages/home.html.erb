@@ -1,0 +1,103 @@
+<div id="status-bar" class="status-bar" hidden>Reconnecting…</div>
+<div id="toast" class="toast" hidden></div>
+
+<main class="app" data-prefill-code="<%= @prefill_code %>">
+
+  <section id="screen-home" class="screen">
+    <h1 class="logo">Bluff Club</h1>
+    <p class="tagline">Write a fake answer. Fool your friends. Spot the truth.</p>
+    <label class="field">
+      <span>Your name</span>
+      <input id="name-input" maxlength="16" autocomplete="nickname" placeholder="e.g. Nitish">
+    </label>
+    <button id="create-btn" class="btn primary">Create a room</button>
+    <div class="divider">or join one</div>
+    <label class="field">
+      <span>Room code</span>
+      <input id="code-input" maxlength="4" autocapitalize="characters" autocomplete="off" placeholder="ABCD">
+    </label>
+    <button id="join-btn" class="btn">Join room</button>
+    <button id="how-btn" class="link">How to play</button>
+  </section>
+
+  <section id="screen-lobby" class="screen" hidden>
+    <p class="label">Room code</p>
+    <h2 id="lobby-code" class="code"></h2>
+    <button id="copy-btn" class="btn small">Copy invite link</button>
+    <p class="hint">Friends open the link, or type the code on <span id="site-host"></span></p>
+    <h3>Players <span id="lobby-count"></span></h3>
+    <ul id="lobby-players" class="players"></ul>
+    <div id="host-settings" class="stack" hidden>
+      <label class="field">
+        <span>Question pack</span>
+        <select id="pack-select"></select>
+      </label>
+      <label class="field">
+        <span>Questions</span>
+        <select id="count-select">
+          <option>3</option><option>5</option><option selected>6</option><option>8</option><option>10</option>
+        </select>
+      </label>
+      <label class="field" id="custom-field" hidden>
+        <span>Your questions, one per line: <code>Question? | Answer</code></span>
+        <textarea id="custom-input" rows="5" placeholder="What was our first product? | HowNow"></textarea>
+      </label>
+      <button id="start-btn" class="btn primary">Start game</button>
+      <p class="hint">Need at least 2 players. Best with 3 to 8.</p>
+    </div>
+    <p id="lobby-wait" class="hint" hidden>Waiting for the host to start…</p>
+    <button id="how-btn-lobby" class="link">How to play</button>
+  </section>
+
+  <section id="screen-writing" class="screen" hidden>
+    <div class="topbar"><span id="writing-round"></span><span id="writing-timer" class="timer"></span></div>
+    <h2 id="writing-question" class="question"></h2>
+    <div id="writing-form" class="stack">
+      <label class="field">
+        <span>Write a fake answer that sounds real</span>
+        <input id="bluff-input" maxlength="60" autocomplete="off">
+      </label>
+      <button id="bluff-btn" class="btn primary">Submit bluff</button>
+    </div>
+    <p id="writing-done" class="hint" hidden>Bluff sent. Waiting for the others…</p>
+    <ul id="writing-players" class="players compact"></ul>
+  </section>
+
+  <section id="screen-voting" class="screen" hidden>
+    <div class="topbar"><span id="voting-round"></span><span id="voting-timer" class="timer"></span></div>
+    <h2 id="voting-question" class="question"></h2>
+    <p class="hint">Tap the answer you think is true</p>
+    <div id="options" class="options"></div>
+    <p id="voting-done" class="hint" hidden>Vote locked. Waiting for the others…</p>
+  </section>
+
+  <section id="screen-reveal" class="screen" hidden>
+    <div class="topbar"><span id="reveal-round"></span><span id="reveal-timer" class="timer"></span></div>
+    <h2 id="reveal-question" class="question"></h2>
+    <div id="reveal-list" class="reveal"></div>
+    <h3>Scores</h3>
+    <ol id="reveal-scores" class="scores"></ol>
+    <button id="next-btn" class="btn" hidden>Next question</button>
+  </section>
+
+  <section id="screen-finished" class="screen" hidden>
+    <h2>Final scores</h2>
+    <ol id="final-scores" class="scores big"></ol>
+    <button id="again-btn" class="btn primary" hidden>Play again</button>
+    <p id="again-wait" class="hint" hidden>Waiting for the host to start a new game…</p>
+    <button id="leave-btn" class="link">Leave room</button>
+  </section>
+
+  <section id="screen-how" class="screen" hidden>
+    <h2>How to play</h2>
+    <ol class="how">
+      <li>Everyone sees a trivia question.</li>
+      <li>Each player writes a <b>fake</b> answer that sounds real.</li>
+      <li>All fakes are mixed with the real answer.</li>
+      <li>Pick the one you think is true.</li>
+      <li><b>+1000</b> if you find the truth. <b>+500</b> for each friend who picks your fake.</li>
+    </ol>
+    <p class="hint">Best with 3 to 8 players. Works on any phone or laptop. The host can add their own questions.</p>
+    <button id="how-close" class="btn">Got it</button>
+  </section>
+</main>

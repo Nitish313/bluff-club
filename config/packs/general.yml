@@ -1,0 +1,14 @@
+name: General Knowledge
+questions:
+  - { question: "What year did the first iPhone go on sale?", answer: "2007" }
+  - { question: "How many bones are in the adult human body?", answer: "206" }
+  - { question: "What is the capital city of Australia?", answer: "Canberra" }
+  - { question: "Which planet has the most moons?", answer: "Saturn" }
+  - { question: "How many minutes are in a full week?", answer: "10,080" }
+  - { question: "What is the tallest mountain in Africa?", answer: "Mount Kilimanjaro" }
+  - { question: "Which country has the most time zones?", answer: "France" }
+  - { question: "What is the longest river in Asia?", answer: "Yangtze" }
+  - { question: "How many keys does a standard piano have?", answer: "88" }
+  - { question: "In which year did the Titanic sink?", answer: "1912" }
+  - { question: "What is the smallest country in the world?", answer: "Vatican City" }
+  - { question: "How many hearts does an octopus have?", answer: "3" }

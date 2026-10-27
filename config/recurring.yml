@@ -1,0 +1,5 @@
+production:
+  close_idle_rooms:
+    class: CloseIdleRoomsJob
+    queue: default
+    schedule: every hour
